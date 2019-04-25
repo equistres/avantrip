@@ -9,7 +9,12 @@ const axiosGraphQL = axios.create({
 });
 
 const ALLCARDS = `{
-    allCards{
+	allStayDatas{
+    customId
+    label
+    bestPrice
+  }
+  allCards{
         description
         id
         imgUrl
@@ -25,7 +30,7 @@ class GetInfo extends Component {
     state = {
         data: null,
         fetched: false,
-        hasFilter:false
+        hasFilter: false
     }
 
     componentDidMount() {
@@ -36,51 +41,62 @@ class GetInfo extends Component {
         axiosGraphQL
             .post('', { query: ALLCARDS })
             .then(result => this.setState({
+                stay: result.data.data.allStayDatas,
                 data: result.data.data.allCards,
                 fetched: true,
             }));
     };
 
-    groupBy(dataToGroupOn, fieldNameToGroupOn, fieldNameForGroupName, fieldNameForChildren) {
-        var result = _.chain(dataToGroupOn)
-            .groupBy(fieldNameToGroupOn)
-            .toPairs()
-            .map(function (currentItem) {
-                return _.zipObject([fieldNameForGroupName, fieldNameForChildren], currentItem);
-            })
-            .value();
-        return result; 
-    };
+    // groupBy(dataToGroupOn, fieldNameToGroupOn, fieldNameForGroupName, fieldNameForChildren) {
+    //     var result = _.chain(dataToGroupOn)
+    //         .groupBy(fieldNameToGroupOn)
+    //         .toPairs()
+    //         .map(function (currentItem) {
+    //             return _.zipObject([fieldNameForGroupName, fieldNameForChildren], currentItem);
+    //         })
+    //         .value();
+    //     return result;
+    // };
 
     render() {
-        const { fetched, data } = this.state;
+        const { fetched, data, stay } = this.state;
 
         if (fetched) {
 
-            let filterByType = this.groupBy(data, 'imgUrl', 'destino', 'paquetes');
-            filterByType = _.sortBy(filterByType, o => o.paquetes.price)
+            // let filterByType = this.groupBy(data, 'imgUrl', 'destino', 'paquetes');
+            // filterByType = _.sortBy(filterByType, o => o.paquetes.price)
 
-            const orderedByPrice = _.sortBy(data, o => o.price)
+            const orderedStay = _.sortBy(stay, o => o.customId)
 
-            const cheaper = { destino: "Todos los destinos", paquetes: [orderedByPrice[0]] }
-            filterByType.unshift(cheaper);
+            // const cheaper = { destino: "Todos los destinos", paquetes: [orderedByPrice[0]] }
+            // filterByType.unshift(cheaper);
 
-            const allData = this.state.data;
+            // const allData = this.state.data;
 
-            if(this.state.hasFilter){
-                allData = "";
-            }
+            // if (this.state.hasFilter) {
+            //     allData = "";
+            // }
 
 
             return (
                 <>
-                <div>
-                    <GetInfoComponent packs={filterByType} />
-                </div>
-                <div>
-                   <Packs info={allData}/>
-                </div>
+                    <div className="container">
+                        <div className="row">
+                            <img src="https://res-5.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_120,w_120,f_auto,b_white,q_auto:eco/v1397193635/04d53b32c02a4751a2d182e357785176.png" />
+                            <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
+                        </div>
+                        <div className="row">
+                            <nav className="navbar navbar-light bg-light">
+                                <form className="form-inline">                                    
+                                    <GetInfoComponent packs={orderedStay} />
+                                </form>
+                            </nav>
+                        </div>
+                        <div className="row"><Packs info={data} /></div>
+                    </div>
                 </>
+
+
             )
         } else {
             return (

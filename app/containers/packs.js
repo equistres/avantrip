@@ -12,7 +12,7 @@ class Packs extends Component {
         });
 
         return (
-            <div>
+            <div className="paraaaaaaa">
                 {its}
             </div>
         )

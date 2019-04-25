@@ -5,7 +5,7 @@ function Packs(props) {
     return (
         <div className="card" style={{ width: '18rem' }}>
             <img className="card-img-top" src={props.info.imgUrl} alt="Card image cap" />
-            <div class="row">
+            <div className="row">
                 <div className="col-sm">
                 <img src="https://www.freeiconspng.com/uploads/airplane-icon--clipart-best-12.png" width="25" alt="Airplane Icon  ClipArt Best" /> Directo
                 </div>
@@ -13,7 +13,7 @@ function Packs(props) {
                     Precio Desde
                 </div>
             </div>
-            <div class="row">
+            <div className="row">
                 <div className="col-sm text-danger">
                     {props.info.description}
                 </div>

@@ -7,7 +7,7 @@ export default function GetInfo({ packs }) {
             let title = null;
 
             if(item.destino.startsWith("Todos")){
-                title = item.destino
+                title = item.destino 
             }else{
                 title = "Viaja por "+item.paquetes[0].description.slice(0, 7)
             }

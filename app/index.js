@@ -12,7 +12,7 @@ class App extends Component {
             <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
           </div>
           <div className="row"><GetInfo/></div>
-          <div className="row">bbbbbbb</div>
+          <div className="row">bbbbbbb</div> 
         </div>
       </>
 

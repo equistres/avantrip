@@ -47,7 +47,7 @@ class GetInfo extends Component {
                 return _.zipObject([fieldNameForGroupName, fieldNameForChildren], currentItem);
             })
             .value();
-        return result;
+        return result; 
     };
 
     render() {
@@ -59,7 +59,7 @@ class GetInfo extends Component {
             filterByType = _.sortBy(filterByType, o => o.paquetes.price)
             const orderedByPrice = _.sortBy(data, o => o.price)
             const cheaper = { destino: "Todos los destinos", paquetes: [orderedByPrice[0]] }
-            filterByType.unshift(cheaper);
+            filterByType.unshift(cheaper); 
 
 
             return (

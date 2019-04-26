@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import GetInfoComponent from '../components/getInfo';
 import Packs from '../containers/packs';
+import _ from 'lodash';
 
 let content;
 
@@ -46,11 +47,18 @@ function useData(defaultResponse) {
     return data;
 }
 
+function handleClick(e){
+    console.log(e.target.id)
+}
+
 
 
 
 export default function GetInfo() {
+
     content = useData({ data: null, stay: null, fetched: false })
+
+    content.stay = _.sortBy(content.stay, o => o.customId)
 
     return !content.fetched ? (
         <div>loading</div>
@@ -61,7 +69,7 @@ export default function GetInfo() {
                     <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
                 </div>
                 <div className="row">
-                    <GetInfoComponent packs={content.stay} />
+                    <GetInfoComponent packs={content.stay} handleClick={handleClick}/>
                 </div>
                 <div className="row">
                     <Packs info={content.data} />

@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Packs(props) {
-    console.log("estoy en pack.js", props.info)
     return (
 
         <div className="col-sm-3">

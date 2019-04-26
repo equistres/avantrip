@@ -9,7 +9,7 @@ const axiosGraphQL = axios.create({
     baseURL: 'https://api.graph.cool/simple/v1/cjtk3okib547g0182680rna24',
 });
 
-const ALLCARDS = `{
+const QUERY = `{
 	allStayDatas{
     customId
     label
@@ -31,7 +31,7 @@ function useData(defaultResponse) {
 
     function getDataFromApi() {
         axiosGraphQL
-            .post('', { query: ALLCARDS })
+            .post('', { query: QUERY })
             .then(result => newData({
                 data: result.data.data.allCards,
                 stay: result.data.data.allStayDatas,
@@ -61,13 +61,11 @@ export default function GetInfo() {
                     <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
                 </div>
                 <div className="row">
-                    <nav className="navbar navbar-light bg-light">
-                        <form className="form-inline">
-                            <GetInfoComponent packs={content.stay} />
-                        </form>
-                    </nav>
+                    <GetInfoComponent packs={content.stay} />
                 </div>
-                <div className="row"><Packs info={content.data} /></div>
+                <div className="row">
+                    <Packs info={content.data} />
+                </div>
             </div>
         )
 }

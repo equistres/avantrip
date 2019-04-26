@@ -34,7 +34,6 @@ function useData(defaultResponse) {
             .post('', { query: ALLCARDS })
             .then(result => newData({
                 data: result.data.data.allCards,
-
                 stay: result.data.data.allStayDatas,
                 fetched: true
             }))

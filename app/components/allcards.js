@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Packs(props) {
+function AllCards(props) {
     return (
 
         <div className="col-sm-3 mb-2">
@@ -29,4 +29,4 @@ function Packs(props) {
 
     )
 }
-export default Packs
+export default AllCards

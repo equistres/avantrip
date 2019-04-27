@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import GetInfoComponent from '../components/getInfo';
-import Packs from './packs';
+import Stay from '../components/stay';
+import AllCards from './allcards';
 import _ from 'lodash';
 
 let content;
@@ -96,10 +96,10 @@ export default function GetInfo() {
                     <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
                 </div>
                 <div className="row">
-                    <GetInfoComponent packs={data.stay} handleClick={handleClickEvent} />
+                    <Stay info={data.stay} handleClick={handleClickEvent} />
                 </div>
                 <div className="row" style={{ width: '1200px' }}>
-                    <Packs info={data.data} />
+                    <AllCards info={data.data} />
                 </div>
             </div>
         )

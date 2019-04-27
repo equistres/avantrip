@@ -88,9 +88,7 @@ export default function GetInfo() {
 
     console.log('render')
     return !data.fetched ? (
-        <div className="loading">
-        <h1>loading...</h1>
-        </div>
+        <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     ) : (
             <div className="container">
                 <div className="row">

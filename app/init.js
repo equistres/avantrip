@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import Stay from '../components/stay';
-import AllCards from './allcards';
+import Stay from './components/stay';
+import AllCards from './containers/allcards';
 import _ from 'lodash';
-
-let content;
-
+import './estilos.css';
 
 const axiosGraphQL = axios.create({
     baseURL: 'https://api.graph.cool/simple/v1/cjtk3okib547g0182680rna24',
@@ -66,7 +64,8 @@ function getDataFromApi(data, newData) {
                 data: result.data.data.allCards,
                 stay: result.data.data.allStayDatas,
                 fetched: true,
-                query: data.query
+                query: data.query,
+                customId: data.customId
             })
         })
     console.log('get data from api')
@@ -77,6 +76,7 @@ export default function GetInfo() {
     const [data, newData] = useState({ data: null, stay: null, fetched: false, query: getQuery(), customId:0});
 
     useEffect(() => {
+        console.log("data en useEffect", data)
         getDataFromApi(data, newData)
     }, [data.customId]);
 
@@ -88,7 +88,9 @@ export default function GetInfo() {
 
     console.log('render')
     return !data.fetched ? (
-        <div>loading</div>
+        <div className="loading">
+        <h1>loading...</h1>
+        </div>
     ) : (
             <div className="container">
                 <div className="row">

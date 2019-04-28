@@ -18,7 +18,7 @@
   "scripts": {
     "create": "webpack",
     "start": "webpack-dev-server --open",
-    "predeploy": "npm run dist",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "build": "./node_modules/.bin/webpack --config webpack.config.js"
   },

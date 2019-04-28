@@ -36,3 +36,4 @@ vignettes/*.pdf
 rsconnect/
 node_modules
 *.log
+npm-debug.log

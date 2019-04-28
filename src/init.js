@@ -95,7 +95,7 @@ export default function GetInfo() {
                     <a href="#" onClick={()=>{location.reload()}}><img src="https://res-5.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_120,w_120,f_auto,b_white,q_auto:eco/v1397193635/04d53b32c02a4751a2d182e357785176.png" /></a>
                     <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
                 </div>
-                <div className="row">
+                <div className="row" style={{ width: '1200px' }}>
                     <Stay info={data.stay} handleClick={handleClickEvent} />
                 </div>
                 <div className="row" style={{ width: '1200px' }}>

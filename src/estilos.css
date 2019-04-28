@@ -85,3 +85,11 @@
     }
   }
   
+
+  .contenedor {
+    height:50%;
+    display:flex;
+    align-items:center; /* vertically aligned! */
+    justify-content: center;
+    background-image: linear-gradient(to right, #626262, #676481, #6666a2, #5f69c4, #4b6de7);
+  }

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import axios from 'axios';
 import Stay from './components/stay';
 import AllCards from './containers/allcards';
 import _ from 'lodash';
 import './estilos.css';
+
+import { StateProvider, useStateValue } from './context/appContext'
 
 const axiosGraphQL = axios.create({
     baseURL: 'https://api.graph.cool/simple/v1/cjtk3okib547g0182680rna24',
@@ -26,7 +28,7 @@ const DEFAULT_QUERY = `{
     }
 }`;
 
-const CUSTOM_QUERY =(customId)=> `{
+const CUSTOM_QUERY = (customId) => `{
     allStayDatas{
     customId
     label
@@ -43,46 +45,68 @@ allCards(filter:{stayId:"${customId}"}){
     }
 }`;
 
+
+
 const getQuery = (customId) => {
-    if (customId && customId!=0)
+    if (customId && customId != 0)
         return CUSTOM_QUERY(customId)
     else
         return DEFAULT_QUERY
 };
+const initialState = { data: null, stay: null, fetched: false}
 
 
 
 
-function getDataFromApi(data, newData) {
+
+function getDataFromApi(data, dispatch, customId) {
+    console.log('get data from api ANTES')
+
     axiosGraphQL
-        .post('', { query: data.query })
+        .post('', { query: getQuery(customId) })
         .then(result => {
             console.log('THEN result', result)
-            console.log('then data', data)
-            console.log('then query', data.query);
-            newData({
+            console.log('DATA CUSTOM', customId)
+            dispatch({
+                type: 'newData',
                 data: result.data.data.allCards,
                 stay: result.data.data.allStayDatas,
-                fetched: true,
-                query: data.query,
-                customId: data.customId
+                fetched: true
             })
         })
     console.log('get data from api')
 }
 
-
 export default function GetInfo() {
-    const [data, newData] = useState({ data: null, stay: null, fetched: false, query: getQuery(), customId:0});
+    const [customId, newCustomId] = useState(0);
+
+    const reducer = (state, action) => {
+        console.log('ACTION REDUCER', action)
+        console.log('STATE REDUCER', state)
+        switch (action.type) {
+            case 'stayClick':
+                newCustomId(action.customId)
+                return state;
+            case 'newData':
+                console.log('VICTORIA')
+                return {...state,
+                    data: action.data,
+                    stay: action.stay,
+                    fetched: action.fetched
+                };
+            default:
+                return state;
+        }
+    };
+    const [data, dispatch] = useReducer(reducer, initialState);
+
 
     useEffect(() => {
         console.log("data en useEffect", data)
-        getDataFromApi(data, newData)
-    }, [data.customId]);
+        getDataFromApi(data, dispatch, customId)
+    }, [customId]);
 
-    const handleClickEvent = (e) => {
-        newData({ data: null, stay: null, fetched: false, query: getQuery(e.target.id), customId: e.target.id })
-    }
+    console.log('DATAAAAAAAAAAA', data)
 
     data.stay = _.sortBy(data.stay, o => o.customId)
 
@@ -90,17 +114,20 @@ export default function GetInfo() {
     return !data.fetched ? (
         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     ) : (
-            <div className="container">
-                <div className="row">
-                    <a href="#" onClick={()=>{location.reload()}}><img src="https://res-5.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_120,w_120,f_auto,b_white,q_auto:eco/v1397193635/04d53b32c02a4751a2d182e357785176.png" /></a>
-                    <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
+            <StateProvider initialState={data} reducer={reducer}>
+                <div className="container">
+                    <div className="row">
+                        <a href="#" onClick={() => { location.reload() }}><img src="https://res-5.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_120,w_120,f_auto,b_white,q_auto:eco/v1397193635/04d53b32c02a4751a2d182e357785176.png" /></a>
+                        <span className="mt-5 text-danger">Viajar es la guita mejor invertida</span>
+                    </div>
+                    <div className="row mb-3 contenedor" style={{ width: '1214px', height: '150px' }}>
+                        <Stay  />
+                    </div>
+                    <div className="row" style={{ width: '1200px' }}>
+                        <AllCards />
+                    </div>
                 </div>
-                <div className="row mb-3 contenedor" style={{ width: '1214px', height:'150px'}}>
-                    <Stay info={data.stay} handleClick={handleClickEvent} />
-                </div>
-                <div className="row" style={{ width: '1200px' }}>
-                    <AllCards info={data.data} />
-                </div>
-            </div>
+            </StateProvider>
+
         )
 }
